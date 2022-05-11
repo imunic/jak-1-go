@@ -29,14 +29,12 @@ type SortingResponse struct {
 
 func sorting(sorting Sorting) SortingResponse {
 	start := time.Now().UnixMilli()
-	uuids := make([]uuid.UUID, sorting.ArraySize)
+	uuids := make([]string, sorting.ArraySize)
 	for i := int64(0); i < sorting.ArraySize; i++ {
-		uuids[i] = uuid.New()
+		uuids[i] = uuid.NewString()
 	}
 	startSort := time.Now().UnixMilli()
-	sort.Slice(uuids, func(i, j int) bool {
-		return uuids[i].String() < uuids[j].String()
-	})
+	sort.Strings(uuids)
 	end := time.Now().UnixMilli()
 
 	return SortingResponse{
@@ -55,7 +53,7 @@ func main() {
 	r := gin.Default()
 
 	// Prometheus Metrics
-	p := ginprometheus.NewPrometheus("gin")
+	p := ginprometheus.NewPrometheus("")
 	p.Use(r)
 
 	v1 := r.Group("/v1")
