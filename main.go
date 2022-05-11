@@ -29,9 +29,9 @@ type SortingResponse struct {
 
 func sorting(sorting Sorting) SortingResponse {
 	start := time.Now().UnixMilli()
-	var uuids []uuid.UUID
+	uuids := make([]uuid.UUID, sorting.ArraySize)
 	for i := int64(0); i < sorting.ArraySize; i++ {
-		uuids = append(uuids, uuid.New())
+		uuids[i] = uuid.New()
 	}
 	startSort := time.Now().UnixMilli()
 	sort.Slice(uuids, func(i, j int) bool {
